@@ -29,7 +29,16 @@
 			    </th>
 			    <td>
 			    	<form:password path="password" placeholder="Password"/><form:errors path="password" cssStyle="color:red" element="span"/>
+			    	<span style="color:red"><c:out value="${duplicateMailAddress}"/></span>
 			    </td>
+			  </tr>
+			  <tr>
+			  	<th>
+			  		パスワード再入力
+			  	</th>
+			  	<td>
+			  		<form:password path="rePassword" placeholder="Passwordを再入力してください"/><form:errors path="rePassword" cssStyle="color:red" element="span"/>
+			  	</td>
 			  </tr>
 			  <tr>
 			  	<td></td>

@@ -26,9 +26,6 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@Autowired
-	private LoginController loginCotroller;
-
 	/**
 	 * フォームを初期化します.
 	 * @return フォーム
@@ -58,6 +55,11 @@ public class MemberController {
 	public String create(@Validated MemberForm form, BindingResult result, 
 			Model model) {
 		if(result.hasErrors()){
+			return form(model);
+		}
+		Member checkMailAddressMember = memberService.findByMailAddress(form.getMailAddress());
+		if(checkMailAddressMember != null){
+			model.addAttribute("duplicateMailAddress", "メールアドレスはすでに登録されています");
 			return form(model);
 		}
 		Member member = new Member();

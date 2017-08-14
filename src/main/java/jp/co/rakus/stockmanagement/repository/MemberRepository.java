@@ -39,12 +39,11 @@ public class MemberRepository {
 	 * @return メンバー情報.メンバーが存在しない場合はnull.
 	 */
 	public Member findByMailAddressAndPassword(String mailAddress, String password) {
-		SqlParameterSource param = new MapSqlParameterSource();
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password", password);
 		Member member = null;
 		try{
 			member = jdbcTemplate.queryForObject(
-					"SELECT id,name,mail_address,password FROM members WHERE mail_address= '"
-							+ mailAddress + "' and password='" + password + "'",
+					"SELECT id,name,mail_address,password FROM members WHERE mail_address= :mailAddress and password= :password",
 					param, 
 					MEMBER_ROW_MAPPER);
 			return member;
@@ -72,5 +71,25 @@ public class MemberRepository {
 		}
 		return member;
 	}
-
+	
+	/**
+	 * メールアドレスからメンバーを取得.
+	 * 
+	 * @param mailAddress 検索したいメールアドレス
+	 * @return メンバー情報 いなければnull
+	 */
+	public Member findByMailAddress(String mailAddress){
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		Member member = null;
+		try{
+			member = jdbcTemplate.queryForObject(
+					"SELECT id,name,mail_address,password FROM members WHERE mail_address= :mailAddress",
+					param, 
+					MEMBER_ROW_MAPPER);
+			return member;
+		} catch(DataAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

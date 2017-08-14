@@ -19,6 +19,9 @@ public class MemberForm {
 	/** パスワード */
 	@NotBlank(message="パスワードを入力してください")
 	private String password;
+	/** 再入力パスワード */
+	@NotBlank(message="パスワードを再入力してください")
+	private String rePassword;
 	public String getName() {
 		return name;
 	}
@@ -36,5 +39,11 @@ public class MemberForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getRePassword() {
+		return rePassword;
+	}
+	public void setRePassword(String rePassword) {
+		this.rePassword = rePassword;
 	}
 }
