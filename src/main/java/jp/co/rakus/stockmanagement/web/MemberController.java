@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private LoginController loginCotroller;
 
 	/**
 	 * フォームを初期化します.
@@ -39,7 +43,7 @@ public class MemberController {
 	 * @return メンバー情報登録画面
 	 */
 	@RequestMapping(value = "form")
-	public String form() {
+	public String form(Model model) {
 		return "/member/form";
 	}
 	
@@ -51,12 +55,15 @@ public class MemberController {
 	 * @return ログイン画面
 	 */
 	@RequestMapping(value = "create")
-	public String create(@Validated MemberForm form, 
+	public String create(@Validated MemberForm form, BindingResult result, 
 			Model model) {
+		if(result.hasErrors()){
+			return form(model);
+		}
 		Member member = new Member();
 		BeanUtils.copyProperties(form, member);
 		memberService.save(member);
-		return "book/list";
+		return "redirect:/";
 	}
 	
 }
