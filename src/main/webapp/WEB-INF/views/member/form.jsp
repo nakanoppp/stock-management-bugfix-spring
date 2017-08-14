@@ -29,8 +29,6 @@
 			    </th>
 			    <td>
 			    	<form:password path="password" placeholder="Password"/><form:errors path="password" cssStyle="color:red" element="span"/>
-			    	<span style="color:red"><c:out value="${duplicateMailAddress}"/></span>
-			    	<span style="color:red"><c:out value="${errorPassword}"/></span>
 			    </td>
 			  </tr>
 			  <tr>
