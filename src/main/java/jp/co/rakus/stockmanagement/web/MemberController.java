@@ -2,6 +2,9 @@ package jp.co.rakus.stockmanagement.web;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,6 +28,14 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Bean
+	private PasswordEncoder passwordEncoder(){
+		return new StandardPasswordEncoder();
+	}
 	
 	/**
 	 * フォームを初期化します.
@@ -54,20 +65,20 @@ public class MemberController {
 	@RequestMapping(value = "create")
 	public String create(@Validated MemberForm form, BindingResult result, 
 			Model model) {
-		if(result.hasErrors()){
-			return form(model);
-		}
 		if(!form.getPassword().equals(form.getRePassword())){
 			result.rejectValue("password", null, "異なる値が入力されました。もう一度入力してください");
-			return form(model);
 		}
 		Member checkMailAddressMember = memberService.findByMailAddress(form.getMailAddress());
 		if(checkMailAddressMember != null){
 			result.rejectValue("mailAddress", null, "メールアドレスはすでに登録されています");
+		}
+		if(result.hasErrors()){
 			return form(model);
 		}
 		Member member = new Member();
 		BeanUtils.copyProperties(form, member);
+		// パスワードをSHA9-256でハッシュ値にする
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		memberService.save(member);
 		return "redirect:/";
 	}

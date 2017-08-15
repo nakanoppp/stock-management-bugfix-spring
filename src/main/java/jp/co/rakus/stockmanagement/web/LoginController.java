@@ -3,6 +3,7 @@ package jp.co.rakus.stockmanagement.web;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.rakus.stockmanagement.domain.Member;
+import jp.co.rakus.stockmanagement.service.LoginUserDetails;
 import jp.co.rakus.stockmanagement.service.MemberService;
 
 /**
@@ -55,13 +57,11 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/login")
 	public String login(@Validated LoginForm form,
-			BindingResult result, Model model) {
+			BindingResult result, Model model, @AuthenticationPrincipal LoginUserDetails userDetails) {
 		if (result.hasErrors()){
 			return index();
 		}
-		String mailAddress = form.getMailAddress();
-		String password = form.getPassword();
-		Member member = memberService.findOneByMailAddressAndPassword(mailAddress, password);
+		Member member = memberService.findOneByMailAddressAndPassword(userDetails.getMember());
 		if (member == null) {
 			ObjectError error = new ObjectError("loginerror", "メールアドレスまたはパスワードが違います。");
             result.addError(error);

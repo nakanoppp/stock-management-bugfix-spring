@@ -44,6 +44,7 @@ public class BookController {
 	 */
 	@RequestMapping(value = "list")
 	public String list(Model model) {
+		
 		List<Book> bookList = bookService.findAll();
 		model.addAttribute("bookList", bookList);
 		return "book/list";

@@ -38,15 +38,15 @@ public class MemberRepository {
 	 * @param password パスワード
 	 * @return メンバー情報.メンバーが存在しない場合はnull.
 	 */
-	public Member findByMailAddressAndPassword(String mailAddress, String password) {
-		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password", password);
-		Member member = null;
+	public Member findByMailAddressAndPassword(Member member) {
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", member.getMailAddress()).addValue("password", member.getPassword());
+		Member throwMember = null;
 		try{
-			member = jdbcTemplate.queryForObject(
+			throwMember = jdbcTemplate.queryForObject(
 					"SELECT id,name,mail_address,password FROM members WHERE mail_address= :mailAddress and password= :password",
 					param, 
 					MEMBER_ROW_MAPPER);
-			return member;
+			return throwMember;
 		} catch(DataAccessException e) {
 			e.printStackTrace();
 			return null;
