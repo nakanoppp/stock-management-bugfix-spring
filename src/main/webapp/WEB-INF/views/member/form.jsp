@@ -12,7 +12,7 @@
 			     	 氏名
 			    </th>
 			    <td>
-			    	<form:input path="name"  placeholder="Name"/><form:errors path="name" cssStyle="color:red" element="span"/>
+			    	<form:input path="name"  placeholder="Name"/><form:errors path="name" cssStyle="color:red" element="div"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -20,7 +20,7 @@
 			      	メールアドレス
 			    </th>
 			    <td>
-			    	<form:input path="mailAddress" placeholder="Email"/><form:errors path="mailAddress" cssStyle="color:red" element="span"/>
+			    	<form:input path="mailAddress" placeholder="Email"/><form:errors path="mailAddress" cssStyle="color:red" element="div"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -28,7 +28,7 @@
 			     	 パスワード
 			    </th>
 			    <td>
-			    	<form:password path="password" placeholder="Password"/><form:errors path="password" cssStyle="color:red" element="span"/>
+			    	<form:password path="password" placeholder="Password"/><form:errors path="password" cssStyle="color:red" element="div"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -36,7 +36,7 @@
 			  		パスワード再入力
 			  	</th>
 			  	<td>
-			  		<form:password path="rePassword" placeholder="Passwordを再入力してください"/><form:errors path="rePassword" cssStyle="color:red" element="span"/>
+			  		<form:password path="rePassword" placeholder="パスワードを再入力してください"/><form:errors path="rePassword" cssStyle="color:red" element="div"/>
 			  	</td>
 			  </tr>
 			  <tr>

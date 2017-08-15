@@ -58,13 +58,11 @@ public class MemberController {
 			return form(model);
 		}
 		if(!form.getPassword().equals(form.getRePassword())){
-//			model.addAttribute("errorPassword", "異なる値が入力されました。もう一度入力してください");
-			result.rejectValue("password", null, "異なる値が入力されましたもう一度入力してください");
+			result.rejectValue("password", null, "異なる値が入力されました。もう一度入力してください");
 			return form(model);
 		}
 		Member checkMailAddressMember = memberService.findByMailAddress(form.getMailAddress());
 		if(checkMailAddressMember != null){
-//			model.addAttribute("duplicateMailAddress", "メールアドレスはすでに登録されています");
 			result.rejectValue("mailAddress", null, "メールアドレスはすでに登録されています");
 			return form(model);
 		}
