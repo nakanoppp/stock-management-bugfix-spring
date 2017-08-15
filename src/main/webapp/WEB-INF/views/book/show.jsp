@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="../common/common.jsp"  %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <body>
 <div class="container">
 	<c:out value="${member.name}"/>さん　こんにちは！<br>
@@ -15,7 +14,7 @@
 			      書籍名
 			    </th>
 			    <td>
-			      ${book.name}
+			      <c:out value="${book.name}"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -23,7 +22,7 @@
 			      著者
 			    </th>
 			    <td>
-			      ${book.author}
+			      <c:out value="${book.author}"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -31,7 +30,7 @@
 			      出版社
 			    </th>
 			    <td>
-			      ${book.publisher}
+			      <c:out value="${book.publisher}"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -47,7 +46,7 @@
 			      ISBNコード
 			    </th>
 			    <td>
-			      ${book.isbncode}
+			      <c:out value="${book.isbncode}"/>
 			    </td>
 			  </tr>
 			  <tr>
@@ -63,7 +62,7 @@
 			      説明
 			    </th>
 			    <td>
-			      ${book.explanation}
+			      <c:out value="${book.explanation}"/>
 			    </td>
 			  </tr>
 			  <tr>
