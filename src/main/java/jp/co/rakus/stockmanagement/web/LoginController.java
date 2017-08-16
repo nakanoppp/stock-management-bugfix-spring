@@ -1,20 +1,20 @@
 package jp.co.rakus.stockmanagement.web;
 
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+//import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.co.rakus.stockmanagement.domain.Member;
+//import jp.co.rakus.stockmanagement.domain.Member;
 import jp.co.rakus.stockmanagement.service.LoginUserDetails;
-import jp.co.rakus.stockmanagement.service.MemberService;
+//import jp.co.rakus.stockmanagement.service.MemberService;
 
 /**
  * ログイン関連処理を行うコントローラー.
@@ -25,10 +25,10 @@ import jp.co.rakus.stockmanagement.service.MemberService;
 @RequestMapping("/")
 public class LoginController {
 
-	@Autowired
-	private MemberService memberService;
-	@Autowired
-	private HttpSession session;
+//	@Autowired
+//	private MemberService memberService;
+//	@Autowired
+//	private HttpSession session;
 
 	/**
 	 * フォームを初期化します.

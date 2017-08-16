@@ -5,6 +5,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import jp.co.rakus.stockmanagement.domain.Member;
 
 public class LoginUserDetails extends org.springframework.security.core.userdetails.User {
+
+	private static final long serialVersionUID = 1L;
 	private final Member member;
 	
 	public LoginUserDetails(Member member){
