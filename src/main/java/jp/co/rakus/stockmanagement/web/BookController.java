@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import jp.co.rakus.stockmanagement.domain.Book;
 import jp.co.rakus.stockmanagement.service.BookService;
@@ -34,6 +37,9 @@ public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private ServletContext application;
 	
 	@ModelAttribute
 	public AddBookForm setAddBookForm(){
@@ -109,37 +115,70 @@ public class BookController {
 			model.addAttribute("imgFileError", "画像ファイルを選択してください");
 			isError = true;
 		}
-		if(result.hasErrors()){
-			isError = true;
-		}
-		if(isError){
+		if(result.hasErrors() || isError){
 			return addBook(model);
+		}
+		byte[] fileBytes = null;
+		try {
+			fileBytes = multipartFile.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		try{
-			multipartFile.transferTo(new File(System.getProperty("user.dir") +"\\src\\main\\webapp\\img\\"+ multipartFile.getOriginalFilename()));			
-		}catch(IOException e){
-			e.printStackTrace();
-			model.addAttribute("imgFileError", "画像ファイルの名前が読み込めません");
-			return addBook(model);
-		}
+		String encodedFile = Base64.getEncoder().encodeToString(fileBytes);
 		
 		Book book = new Book();
 		BeanUtils.copyProperties(form, book);
-		try {
-			book.setSaledate(new SimpleDateFormat("yyyyMMdd").parse(form.getSaledate()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			result.rejectValue("saledate", null, "入力形式が違います");
-			return addBook(model);
-		}
+		book.setSaledate(form.getDateSaledate());
 		book.setPrice(Integer.parseInt(form.getPrice()));
 		book.setStock(Integer.parseInt(form.getStock()));
-		book.setImage(multipartFile.getOriginalFilename());
+		book.setImage(encodedFile);
 		book.setId(bookService.getLastId()+1);
 		bookService.save(book);
 		return "redirect:/book/add-success";
 	}
+//	public String add(@Validated AddBookForm form, BindingResult result, Model model, @RequestParam("imgFile") MultipartFile multipartFile){
+//		boolean isError = false;
+//		if(multipartFile.isEmpty()){
+//			model.addAttribute("imgFileError", "画像ファイルを選択してください");
+//			isError = true;
+//		}
+//		if(result.hasErrors()){
+//			isError = true;
+//		}
+//		if(isError){
+//			return addBook(model);
+//		}
+////		if(result.hasErrors() || isError){
+////			return addBook(model);
+////		}
+//		
+//		try{
+////			multipartFile.transferTo(new File(System.getProperty("user.dir") +"\\src\\main\\webapp\\img\\"+ multipartFile.getOriginalFilename()));			
+//			multipartFile.transferTo(new File(application.getRealPath("/img/") + multipartFile.getOriginalFilename()));						
+//		}catch(IOException e){
+//			e.printStackTrace();
+//			model.addAttribute("imgFileError", "画像ファイルの名前が読み込めません");
+//			return addBook(model);
+//		}
+//		
+//		Book book = new Book();
+//		BeanUtils.copyProperties(form, book);
+////		try {
+////			book.setSaledate(new SimpleDateFormat("yyyyMMdd").parse(form.getSaledate()));
+////		} catch (ParseException e) {
+////			e.printStackTrace();
+////			result.rejectValue("saledate", null, "入力形式が違います");
+////			return addBook(model);
+////		}
+//		book.setSaledate(form.getDateSaledate());
+//		book.setPrice(Integer.parseInt(form.getPrice()));
+//		book.setStock(Integer.parseInt(form.getStock()));
+//		book.setImage(multipartFile.getOriginalFilename());
+//		book.setId(bookService.getLastId()+1);
+//		bookService.save(book);
+//		return "redirect:/book/add-success";
+//	}
 	
 	/**
 	 * 書籍登録画面を表示します.

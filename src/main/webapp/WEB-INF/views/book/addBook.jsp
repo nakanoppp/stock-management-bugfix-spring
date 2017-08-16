@@ -60,7 +60,7 @@
 			      発売日
 			    </th>
 			    <td>
-			      <form:input path="saledate" pattern="[0-9]{8}" />
+			      <form:input path="saledate" type="date" value="yyyy-MM-dd" />
 			      <form:errors path="saledate" cssStyle="color:red" element="div"/>
 			    </td>
 			  </tr>

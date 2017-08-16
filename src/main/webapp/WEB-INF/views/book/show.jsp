@@ -71,7 +71,7 @@
 			      画像
 			    </th>
 			    <td>
-			      <img src="img/<c:out value="${book.image}"/>"/>
+			      <img src="data:image/jpeg;base64,<c:out value="${book.image}"/>"/>
 			    </td>
 			  </tr>
 			  <tr>

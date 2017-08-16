@@ -1,5 +1,9 @@
 package jp.co.rakus.stockmanagement.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class AddBookForm {
@@ -19,6 +23,16 @@ public class AddBookForm {
 	private String explanation;
 	@NotBlank(message="在庫数を入力してください")
 	private String stock;
+	
+	public Date getDateSaledate(){
+		Date date = null;
+		try {
+			date = (new SimpleDateFormat("yyyy-MM-dd").parse(this.saledate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 	
 	public String getName() {
 		return name;
