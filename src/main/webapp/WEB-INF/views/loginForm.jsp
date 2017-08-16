@@ -7,7 +7,6 @@
 		<div class="row">
 		<div style="color: red"><c:out value="${loginerror}"/></div>
 		<form:form modelAttribute="loginForm" action="${pageContext.request.contextPath}/login">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<table class="table table-striped">
 			  <tr>
 			    <th>

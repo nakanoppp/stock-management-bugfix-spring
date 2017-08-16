@@ -1,10 +1,15 @@
 package jp.co.rakus.stockmanagement.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import jp.co.rakus.stockmanagement.domain.Book;
 import jp.co.rakus.stockmanagement.service.BookService;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +19,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 書籍関連処理を行うコントローラー.
@@ -27,6 +34,11 @@ public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@ModelAttribute
+	public AddBookForm setAddBookForm(){
+		return new AddBookForm();
+	}
 	
 	/**
 	 * フォームを初期化します.
@@ -79,6 +91,75 @@ public class BookController {
 		book.setStock(form.getStock());
 		bookService.update(book);
 		return list(model);
+	}
+	
+	/**
+	 * 書籍情報を登録する.
+	 * 
+	 * @param form 入力情報を受け取るフォーム
+	 * @param result エラー用のリザルト
+	 * @param model リクエストスコープ
+	 * @param multipartFile アップロードされたファイル
+	 * @return 登録成功画面
+	 */
+	@RequestMapping("/add")
+	public String add(@Validated AddBookForm form, BindingResult result, Model model, @RequestParam("imgFile") MultipartFile multipartFile){
+		boolean isError = false;
+		if(multipartFile.isEmpty()){
+			model.addAttribute("imgFileError", "画像ファイルを選択してください");
+			isError = true;
+		}
+		if(result.hasErrors()){
+			isError = true;
+		}
+		if(isError){
+			return addBook(model);
+		}
+		
+		try{
+			multipartFile.transferTo(new File(System.getProperty("user.dir") +"\\src\\main\\webapp\\img\\"+ multipartFile.getOriginalFilename()));			
+		}catch(IOException e){
+			e.printStackTrace();
+			model.addAttribute("imgFileError", "画像ファイルの名前が読み込めません");
+			return addBook(model);
+		}
+		
+		Book book = new Book();
+		BeanUtils.copyProperties(form, book);
+		try {
+			book.setSaledate(new SimpleDateFormat("yyyyMMdd").parse(form.getSaledate()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			result.rejectValue("saledate", null, "入力形式が違います");
+			return addBook(model);
+		}
+		book.setPrice(Integer.parseInt(form.getPrice()));
+		book.setStock(Integer.parseInt(form.getStock()));
+		book.setImage(multipartFile.getOriginalFilename());
+		book.setId(bookService.getLastId()+1);
+		bookService.save(book);
+		return "redirect:/book/add-success";
+	}
+	
+	/**
+	 * 書籍登録画面を表示します.
+	 * 
+	 * @param model リクエストスコープ
+	 * @return 書籍登録画面
+	 */
+	@RequestMapping("/add-book")
+	public String addBook(Model model){
+		return "book/addBook";
+	}
+	
+	/**
+	 * 登録成功画面を表示します.
+	 * 
+	 * @return 登録成功画面
+	 */
+	@RequestMapping("/add-success")
+	public String success(){
+		return "book/addSuccess";
 	}
 
 }

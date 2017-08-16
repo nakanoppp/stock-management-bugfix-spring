@@ -5,6 +5,9 @@
 <div class="container">
 	<security:authentication property="principal.member.name" /> さん　こんにちは！<br>
 	<a href="${pageContext.request.contextPath}/logout/sessionInvalidate">ログアウト</a>
+	<div>
+		<a href="${pageContext.request.contextPath}/book/add-book">新しく書籍を登録する</a>
+	</div>
 	<h3>書籍一覧</h3>
 	<div class="span8">
 		<div class="row">
@@ -22,8 +25,6 @@
 			  </tr>
 			  </c:forEach>
 			</table>
-
-
 		</div>
 	</div>
 </div>

@@ -27,12 +27,16 @@ public class BookService {
 		return bookRepository.findOne(id);
 	}
 	
-//	public Book save(Book book){
-//		return bookRepository.save(book);
-//	}
+	public void save(Book book){
+		bookRepository.save(book);
+	}
 	
 	public Book update(Book book){
 		return bookRepository.update(book);
+	}
+	
+	public Integer getLastId(){
+		return bookRepository.getLastId();
 	}
 	
 //	public void delete(Integer id){
