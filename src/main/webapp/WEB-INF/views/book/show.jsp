@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="../common/common.jsp"  %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <body>
 <div class="container">
-	<c:out value="${member.name}"/>さん　こんにちは！<br>
+	<security:authentication property="principal.member.name" />さん　こんにちは！<br>
 	<a href="${pageContext.request.contextPath}/logout/sessionInvalidate">ログアウト</a>
 	<h3>書籍在庫数変更画面</h3>
 	<div class="span8">

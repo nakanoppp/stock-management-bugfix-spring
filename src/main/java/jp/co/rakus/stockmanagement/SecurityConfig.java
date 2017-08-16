@@ -28,14 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/", "/login", "/member/form", "/member/create").permitAll() // 認証なしでアクセスできるアドレスを指定
+			.antMatchers("/", "/member/form", "/member/create").permitAll() // 認証なしでアクセスできるアドレスを指定
 			.anyRequest().authenticated();
 		http.formLogin()
 			.loginProcessingUrl("/login") // ログインを行うメソッドに飛ぶアドレス
 			.loginPage("/") // ログインページを表示するアドレス
-			.defaultSuccessUrl("/book/list", true) // ログインが成功したときに飛ぶアドレス 
-			.failureUrl("/login") // ログイン失敗したときに飛ぶアドレス
-			.usernameParameter("mailAddress").passwordParameter("password") // ログインに使用する値 今回はMemberクラスのステータスを使用している？
+			.defaultSuccessUrl("/book/list", false) // ログインが成功したときに飛ぶアドレス 
+			.failureUrl("/?error=true") // ログイン失敗したときに飛ぶアドレス
+			.usernameParameter("mailAddress").passwordParameter("password") // ログインするときに受け取るフォームのステータス
 			.and();
 		http.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout/sessionInvalidate")) // ログアウト処理をするメソッドに飛ぶアドレス

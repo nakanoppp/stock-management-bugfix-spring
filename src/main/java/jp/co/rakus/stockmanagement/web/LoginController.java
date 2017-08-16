@@ -44,7 +44,11 @@ public class LoginController {
 	 * @return ログイン画面
 	 */
 	@RequestMapping
-	public String index() {
+	public String index(String error, Model model) {
+		boolean isError = Boolean.valueOf(error);
+		if(isError){
+			model.addAttribute("loginerror", "メールアドレスまたはパスワードが違います。");
+		}
 		return "loginForm";
 	}
 	
@@ -58,16 +62,16 @@ public class LoginController {
 	@RequestMapping(value = "/login")
 	public String login(@Validated LoginForm form,
 			BindingResult result, Model model, @AuthenticationPrincipal LoginUserDetails userDetails) {
-		if (result.hasErrors()){
-			return index();
-		}
-		Member member = memberService.findOneByMailAddressAndPassword(userDetails.getMember());
-		if (member == null) {
-			ObjectError error = new ObjectError("loginerror", "メールアドレスまたはパスワードが違います。");
-            result.addError(error);
-			return index();
-		}
-		session.setAttribute("member", member);
+//		if (result.hasErrors()){
+//			return index();
+//		}
+//		Member member = memberService.findOneByMailAddressAndPassword(userDetails.getMember());
+//		if (member == null) {
+//			ObjectError error = new ObjectError("loginerror", "メールアドレスまたはパスワードが違います。");
+//            result.addError(error);
+//			return index();
+//		}
+//		session.setAttribute("member", member);
 		return "redirect:/book/list";
 	}
 }

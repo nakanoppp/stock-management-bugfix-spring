@@ -3,7 +3,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <body>
 <div class="container">
-	<security:authentication property="principal.username" /> さん　こんにちは！<br>
+	<security:authentication property="principal.member.name" /> さん　こんにちは！<br>
 	<a href="${pageContext.request.contextPath}/logout/sessionInvalidate">ログアウト</a>
 	<h3>書籍一覧</h3>
 	<div class="span8">
