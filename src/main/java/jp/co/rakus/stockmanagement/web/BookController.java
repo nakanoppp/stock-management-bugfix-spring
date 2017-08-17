@@ -124,15 +124,18 @@ public class BookController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		// Base64でファイルをエンコードして文字列にする
 		String encodedFile = Base64.getEncoder().encodeToString(fileBytes);
+		// ファイル別に形式を読み取ってブラウザで表示できるようにするコードを発行
+		String fileTypeCode = "data:" + multipartFile.getContentType() + ";base64,"; 
+		
 		
 		Book book = new Book();
 		BeanUtils.copyProperties(form, book);
 		book.setSaledate(form.getDateSaledate());
 		book.setPrice(Integer.parseInt(form.getPrice()));
 		book.setStock(Integer.parseInt(form.getStock()));
-		book.setImage(encodedFile);
+		book.setImage(fileTypeCode + encodedFile);
 		book.setId(bookService.getLastId()+1);
 		bookService.save(book);
 		return "redirect:/book/add-success";
